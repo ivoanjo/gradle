@@ -240,7 +240,6 @@ public class JavaBasePlugin implements Plugin<ProjectInternal> {
     private void defineConfigurationsForSourceSet(SourceSet sourceSet, ConfigurationContainer configurations, final JavaPluginConvention convention) {
         String compileConfigurationName = sourceSet.getCompileConfigurationName();
         String implementationConfigurationName = sourceSet.getImplementationConfigurationName();
-        String apiConfigurationName = sourceSet.getApiConfigurationName();
         String runtimeConfigurationName = sourceSet.getRuntimeConfigurationName();
         String runtimeOnlyConfigurationName = sourceSet.getRuntimeOnlyConfigurationName();
         String compileOnlyConfigurationName = sourceSet.getCompileOnlyConfigurationName();
@@ -308,7 +307,7 @@ public class JavaBasePlugin implements Plugin<ProjectInternal> {
         sourceSet.setRuntimeClasspath(sourceSet.getOutput().plus(runtimeClasspathConfiguration));
         sourceSet.setAnnotationProcessorPath(annotationProcessorConfiguration);
 
-        compileConfiguration.deprecateForDeclaration(implementationConfigurationName, apiConfigurationName);
+        compileConfiguration.deprecateForDeclaration(implementationConfigurationName);
         compileConfiguration.deprecateForConsumption(apiElementsConfigurationName);
         compileConfiguration.deprecateForResolution(compileClasspathConfigurationName);
 

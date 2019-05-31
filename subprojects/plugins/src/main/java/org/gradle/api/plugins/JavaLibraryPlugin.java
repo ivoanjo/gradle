@@ -24,6 +24,7 @@ import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.compile.JavaCompile;
+import org.gradle.internal.deprecation.DeprecatableConfiguration;
 
 import javax.inject.Inject;
 
@@ -51,6 +52,7 @@ public class JavaLibraryPlugin implements Plugin<Project> {
         SourceSetContainer sourceSets = project.getExtensions().getByType(SourceSetContainer.class);
         ConfigurationContainer configurations = project.getConfigurations();
         addApiToMainSourceSet(project, sourceSets, configurations);
+        deprecateCompileConfiguration(sourceSets, configurations);
     }
 
     private void addApiToMainSourceSet(Project project, SourceSetContainer sourceSets, ConfigurationContainer configurations) {
@@ -75,4 +77,9 @@ public class JavaLibraryPlugin implements Plugin<Project> {
         apiConfiguration.extendsFrom(compileConfiguration);
     }
 
+    private void deprecateCompileConfiguration(SourceSetContainer sourceSets, ConfigurationContainer configurations) {
+        SourceSet sourceSet = sourceSets.getByName("main");
+        DeprecatableConfiguration compileConfiguration = (DeprecatableConfiguration) configurations.getByName(sourceSet.getCompileConfigurationName());
+        compileConfiguration.deprecateForDeclaration(sourceSet.getImplementationConfigurationName(), sourceSet.getApiConfigurationName());
+    }
 }
